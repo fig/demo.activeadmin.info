@@ -14,30 +14,38 @@ User.delete_all
 Product.delete_all
 
 # Load each product from the yaml file
+print "Seeding Products "
 YAML.load_file(File.expand_path("../seeds/products.yml", __FILE__)).each do |product|
   Product.create! product
+  print "."
 end
 
 NB_PRODUCTS = Product.count
+puts "\nCreated #{NB_PRODUCTS} Products"
 
 # Create 100 users
+print "Seeding Users"
 NB_USERS = 100
 
 NB_USERS.times do |n|
+  print "."
   User.create! do |u|
     u.username = Faker::Internet.user_name + n.to_s
     u.email = Faker::Internet.email.gsub('@', "#{n}@")
     u.password = u.password_confirmation = 'password'
   end
 end
+puts "\nCreated #{NB_USERS} Users"
 
 # Create 300 Orders
 NB_ORDERS = 300
+print "Seeding Orders"
 
 user_ids = User.pluck(:id)
 product_ids = Product.pluck(:id)
 
 NB_ORDERS.times do
+  print "."
   user = User.find(user_ids.sample)
   order = user.orders.create!
   nb_items = rand(9) + 1
@@ -53,3 +61,4 @@ NB_ORDERS.times do
 
   order.recalculate_price! and order.checkout! if rand(100) < 90
 end
+puts "\nCreated #{NB_ORDERS} Orders"

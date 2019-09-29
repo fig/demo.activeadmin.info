@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '>= 2.2.2'
+ruby '~> 2.6.2'
 
 gem 'rails', '~> 6.0.0'
 
@@ -15,6 +15,8 @@ gem 'turbolinks'
 gem 'spring',        group: :development
 
 gem 'activeadmin', git: 'https://github.com/activeadmin/activeadmin'
+gem 'formadmin'
+
 gem "devise"
 
 gem "faker"
@@ -23,6 +25,9 @@ gem 'newrelic_rpm', '~> 6.0'
 gem 'country_select'
 
 group :development do
+  gem 'guard-rspec',
+      git: 'https://github.com/fig/guard-rspec.git',
+  require: false
   gem 'mechanize','2.7.6'
 end
 
@@ -51,4 +56,3 @@ group :test do
   gem "webmock", "~> 3.7.0"
   gem 'simplecov', :require => false
 end
-

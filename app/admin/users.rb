@@ -4,16 +4,20 @@ ActiveAdmin.register User do
 
   filter :username
   filter :email
-  filter :created_at
+  filter :created_at, label: 'Join Date'
 
   permit_params :username, :email, :password
 
   index do
     selectable_column
     id_column
-    column :username
+    column :username do |user|
+      link_to user.username, admin_user_path(user)
+    end
     column :email
-    column :created_at
+    column "Member since", sortable: :created_at do |user|
+      user.created_at.strftime("%e %b %Y")
+    end
     actions
   end
 
@@ -64,7 +68,12 @@ ActiveAdmin.register User do
   end
 
   sidebar "Customer Details", only: :show do
-    attributes_table_for user, :username, :email, :created_at
+    # attributes_table_for user, :username, :email, :created_at
+    attributes_table_for user do
+      row :username
+      row :email
+      row("Member since") {user.created_at.strftime "%e %b %Y"}
+    end
   end
 
   sidebar "Order History", only: :show do
